@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ahmed Ali | Cinematic Portfolio & Digital Experience Architect</title>
+    <meta name="description"
+        content="Explore the cinematic portfolio of Ahmed Ali, a multi-disciplinary developer and designer specializing in immersive digital experiences and interactive web design.">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;700&family=Syncopate:wght@400;700&family=Syne:wght@400;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/global.css">
+    <link rel="stylesheet" href="assets/css/index.css">
+</head>
+</head>
+
+<body>
+    <!-- CUSTOM CURSOR -->
+    <div class="cursor-dot" id="cursorDot"></div>
+    <div class="cursor-follower" id="cursorFollower"></div>
+
+    <!-- PRELOADER -->
+    <div id="preloader">
+        <div class="load-text" id="loadStatus">Initializing System...</div>
+        <div class="load-bar">
+            <div class="load-progress" id="loadProgress"></div>
+        </div>
+    </div>
+
+    <div id="scrollProgress"></div>
+    <div id="grid"></div>
+    <div id="schematic"></div>
+    <div class="aura"></div>
+    <div class="grain"></div>
+    <canvas id="particleCanvas"></canvas>
+    <div id="tooltip"></div>
+    <div id="terminal"></div>
+
+    <div class="controls">
+        <div id="systemClock"
+            style="font-family:'Syncopate'; font-size:0.6rem; letter-spacing:2px; color:var(--accent); display:flex; align-items:center; margin-right:1rem; opacity:0.6;">
+            00:00:00</div>
+
+        <button class="btn magnetic" onclick="cycleTheme()">Next Theme</button>
+        <a href="projects.html" class="btn magnetic" style="text-decoration: none;">Projects</a>
+        <a href="contact.html" class="btn magnetic" style="text-decoration: none;">Contact</a>
+    </div>
+
+    <main class="viewport">
+        <div id="bubbleContainer"></div>
+        <div class="scene" id="tiltScene">
+            <div class="name-wrap" id="nameWrap">
+                <div class="flare"></div>
+            </div>
+            <div class="subtitle" id="subtitle">Digital Experience Architect</div>
+            <div class="socials" id="socials">
+                <a href="https://github.com/Rana-Ahmed-Ali" target="_blank" class="social-link"><svg
+                        viewBox="0 0 24 24">
+                        <path
+                            d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+                    </svg></a>
+            </div>
+            <div class="scroll-indicator">
+                <span>Scroll Down</span>
+                <div style="width: 1px; height: 30px; background: white;"></div>
+            </div>
+        </div>
+    </main>
+
+    <section class="viewport about-section">
+        <div class="content-card">
+            <h2 id="aboutTitle" style="font-size: 2.5rem; margin-bottom: 1.5rem; color: var(--accent);"></h2>
+            <p id="aboutText" class="typing-cursor"
+                style="line-height: 1.8; opacity: 0.8; font-size: 1.1rem; min-height: 100px;"></p>
+            <div style="margin-top: 2rem; display: flex; gap: 1rem;">
+                <a href="projects.html" class="btn magnetic" style="text-decoration: none;">View Projects</a>
+                <a href="contact.html" class="btn magnetic" style="background: transparent; text-decoration: none;">Get
+                    in Touch</a>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // --- 1. CONFIG & STATE ---
+        const KEYWORDS = [
+            { t: 'AI & AGENTIC', d: 'Intelligent systems and autonomous trading bots.' },
+            { t: 'FINTECH', d: 'Secure payment gateways and financial dashboards.' },
+            { t: 'CRYPTO', d: 'Real-time money flow analysis and blockchain data.' },
+            { t: 'FULL-STACK', d: 'Comprehensive web systems and management solutions.' },
+            { t: 'DASHBOARDS', d: 'High-performance interactive data visualizations.' },
+            { t: 'MANAGEMENT', d: 'Enterprise-grade student and project tracking systems.' },
+            { t: 'UI/UX', d: 'Premium, cinematic, and physics-based interfaces.' },
+            { t: 'DATABASE', d: 'Optimized architectures for complex data relations.' },
+            { t: 'PYTHON', d: 'Advanced scripts for AI and number conversion.' },
+            { t: 'REACT', d: 'Modern, dynamic, and responsive front-end experiences.' }
+        ];
+        const ABOUT_PHRASES = [
+            "Architecting autonomous agentic trading bots.",
+            "Building secure global payment ecosystems.",
+            "Visualizing real-time crypto money flow.",
+            "Developing AI-powered number conversion systems.",
+            "Engineering enterprise student management solutions.",
+            "Crafting cinematic smart TV dashboard experiences.",
+            "Merging complex logic with premium interfaces.",
+            "Scaling full-stack architectures for fintech."
+        ];
+
+        let mouseX = 0, mouseY = 0;
+        let activeTheme = localStorage.getItem('portfolio-theme') || 'midnight';
+        document.documentElement.setAttribute('data-theme', activeTheme);
+
+        // --- 2. PRELOADER & SCROLL ---
+        const progress = document.getElementById('loadProgress');
+        const status = document.getElementById('loadStatus');
+        let p = 0;
+        let loadFinished = false;
+
+        const interval = setInterval(() => {
+            if (!loadFinished) {
+                p += Math.random() * 10;
+                if (p >= 90) p = 90;
+            } else {
+                p += Math.random() * 30;
+            }
+
+            if (p >= 100) {
+                p = 100;
+                clearInterval(interval);
+                setTimeout(() => {
+                    document.getElementById('preloader').classList.add('hidden');
+                    document.body.style.overflow = 'auto';
+                }, 200);
+            }
+            progress.style.width = p + '%';
+            status.textContent = p > 50 ? "Neural Link Established" : "Initializing System...";
+        }, 50);
+
+        window.addEventListener('load', () => {
+            loadFinished = true;
+        });
+
+        // Failsafe
+        setTimeout(() => { loadFinished = true; }, 5000);
+
+        window.addEventListener('scroll', () => {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById('scrollProgress').style.width = scrolled + "%";
+
+            // Trigger Typing
+            const rect = document.getElementById('aboutText').getBoundingClientRect();
+            if (rect.top < window.innerHeight && !window.typingStarted) {
+                typeWriter("aboutTitle", "Digital Engineering & Architecture", 50, () => {
+                    cycleAboutText();
+                });
+                window.typingStarted = true;
+            }
+        });
+
+        // REVEAL ON SCROLL OBSERVER
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    entry.target.classList.add('active');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+        function typeWriter(id, text, speed, callback) {
+            let i = 0;
+            const el = document.getElementById(id);
+            function type() {
+                if (i < text.length) {
+                    el.innerHTML += text.charAt(i);
+                    i++;
+                    setTimeout(type, speed);
+                } else if (callback) callback();
+            }
+            type();
+        }
+
+        function cycleAboutText() {
+            const el = document.getElementById('aboutText');
+            let currentIdx = Math.floor(Math.random() * ABOUT_PHRASES.length);
+
+            function next() {
+                const text = ABOUT_PHRASES[currentIdx];
+                let i = 0;
+                el.innerHTML = "";
+
+                function type() {
+                    if (i < text.length) {
+                        el.innerHTML += text.charAt(i);
+                        i++;
+                        setTimeout(type, 50);
+                    } else {
+                        setTimeout(erase, 3000);
+                    }
+                }
+
+                function erase() {
+                    if (el.innerHTML.length > 0) {
+                        el.innerHTML = el.innerHTML.slice(0, -1);
+                        setTimeout(erase, 30);
+                    } else {
+                        currentIdx = (currentIdx + 1) % ABOUT_PHRASES.length;
+                        next();
+                    }
+                }
+                type();
+            }
+            next();
+        }
+
+        // --- 3. THEME & UI ---
+
+        function cycleTheme() {
+            const themes = ['midnight', 'cyberpunk', 'emerald'];
+            activeTheme = themes[(themes.indexOf(activeTheme) + 1) % themes.length];
+            document.documentElement.setAttribute('data-theme', activeTheme);
+            localStorage.setItem('portfolio-theme', activeTheme);
+        }
+
+        const nameWrap = document.getElementById('nameWrap');
+        [..."AHMED ALI"].forEach((char, i) => {
+            if (char === ' ') return nameWrap.appendChild(Object.assign(document.createElement('div'), { style: 'width: 5rem' }));
+            const el = document.createElement('span');
+            el.className = 'letter';
+            el.textContent = char;
+            el.style.animationDelay = `${1 + i * 0.4}s`;
+            nameWrap.appendChild(el);
+        });
+        setTimeout(() => document.getElementById('socials').classList.add('visible'), 8000);
+
+        // --- 4. MAGNETIC & TILT ---
+        const magneticBtns = document.querySelectorAll('.magnetic');
+        const tiltScene = document.getElementById('tiltScene');
+
+        function updateInteractions() {
+            // 3D Tilt
+            const ax = -(window.innerWidth / 2 - mouseX) / 40;
+            const ay = (window.innerHeight / 2 - mouseY) / 20;
+            tiltScene.style.transform = `rotateY(${ax}deg) rotateX(${ay}deg)`;
+
+            // Magnetic Buttons
+            magneticBtns.forEach(btn => {
+                const rect = btn.getBoundingClientRect();
+                const bx = rect.left + rect.width / 2;
+                const by = rect.top + rect.height / 2;
+                const dist = Math.sqrt((mouseX - bx) ** 2 + (mouseY - by) ** 2);
+                if (dist < 100) {
+                    const x = (mouseX - bx) * 0.4;
+                    const y = (mouseY - by) * 0.4;
+                    btn.style.transform = `translate(${x}px, ${y}px)`;
+                } else {
+                    btn.style.transform = `translate(0, 0)`;
+                }
+            });
+
+            // Grid Mask
+            document.documentElement.style.setProperty('--m-x', `${mouseX}px`);
+            document.documentElement.style.setProperty('--m-y', `${mouseY}px`);
+
+            // Schematic Parallax
+            document.getElementById('schematic').style.backgroundPosition = `${mouseX * 0.05}px ${mouseY * 0.05}px`;
+        }
+
+        // --- 5. PHYSICS BUBBLES (LIQUID POP) ---
+        class Bubble {
+            constructor(data, index) {
+                this.data = data;
+                this.el = document.createElement('div');
+                this.el.className = 'floating-element';
+                this.el.textContent = data.t;
+                this.size = Math.random() * 80 + 100;
+                this.radius = this.size / 2;
+                this.x = Math.random() * (window.innerWidth - this.size);
+                this.y = Math.random() * (window.innerHeight - this.size);
+                this.vx = (Math.random() - 0.5) * 3;
+                this.vy = (Math.random() - 0.5) * 3;
+                this.mass = this.size / 100;
+
+                this.el.style.width = `${this.size}px`;
+                this.el.style.height = `${this.size}px`;
+                this.el.style.fontSize = `${this.size * 0.12}px`;
+
+                // Liquid Pop Reveal
+                setTimeout(() => {
+                    this.el.style.transition = 'transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+                    this.el.style.transform = 'scale(1)';
+                    setTimeout(() => this.el.style.transition = 'background 0.3s', 800);
+                }, 8000 + index * 150);
+
+                this.el.onmouseenter = (e) => showTooltip(e, data.d);
+                this.el.onmouseleave = hideTooltip;
+                document.getElementById('bubbleContainer').appendChild(this.el);
+            }
+
+            update() {
+                const dx = (this.x + this.radius) - mouseX;
+                const dy = (this.y + this.radius) - mouseY;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+                if (dist < 400) {
+                    if (dist < 100) {
+                        this.vx -= (dy / dist) * 0.4;
+                        this.vy += (dx / dist) * 0.4;
+                        this.vx -= (dx / dist) * 0.1;
+                        this.vy -= (dy / dist) * 0.1;
+                    } else {
+                        this.vx += (dx / dist) * ((400 - dist) / 400) * 0.8;
+                        this.vy += (dy / dist) * ((400 - dist) / 400) * 0.8;
+                    }
+                }
+                // Random Wandering
+                this.vx += (Math.random() - 0.5) * 0.1;
+                this.vy += (Math.random() - 0.5) * 0.1;
+
+                this.vx *= 0.99; this.vy *= 0.99;
+                this.x += this.vx; this.y += this.vy;
+
+                // Bounce with energy loss
+                if (this.x < 0) { this.x = 0; this.vx *= -0.8; }
+                if (this.x + this.size > window.innerWidth) { this.x = window.innerWidth - this.size; this.vx *= -0.8; }
+                if (this.y < 0) { this.y = 0; this.vy *= -0.8; }
+                if (this.y + this.size > window.innerHeight) { this.y = window.innerHeight - this.size; this.vy *= -0.8; }
+
+                this.el.style.transform = `translate3d(${this.x}px, ${this.y}px, 0) scale(${this.el.style.transform.includes('scale(1)') ? 1 : 0})`;
+                
+                // Hide if off-screen on small devices
+                if (window.innerWidth < 768 && index > 3) {
+                    this.el.style.display = 'none';
+                }
+            }
+        }
+
+        const bubbles = KEYWORDS.map((k, i) => new Bubble(k, i));
+        function resolveCollision(b1, b2) {
+            const dx = (b2.x + b2.radius) - (b1.x + b1.radius);
+            const dy = (b2.y + b2.radius) - (b1.y + b1.radius);
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            const min = b1.radius + b2.radius;
+            if (dist < min && dist > 0) {
+                const overlap = min - dist;
+                const nx = dx / dist, ny = dy / dist;
+                b1.x -= nx * overlap / 2; b1.y -= ny * overlap / 2;
+                b2.x += nx * overlap / 2; b2.y += ny * overlap / 2;
+                const v1n = b1.vx * nx + b1.vy * ny;
+                const v2n = b2.vx * nx + b2.vy * ny;
+                if (v1n - v2n < 0) return;
+                const impulse = (2 * (v1n - v2n)) / (b1.mass + b2.mass);
+                b1.vx -= impulse * b2.mass * nx * 0.8; b1.vy -= impulse * b2.mass * ny * 0.8;
+                b2.vx += impulse * b1.mass * nx * 0.8; b2.vy += impulse * b1.mass * ny * 0.8;
+            }
+        }
+
+        // --- 6. CANVAS & AUDIO ---
+        const canvas = document.getElementById('particleCanvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        window.onresize = () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; };
+        window.onresize();
+
+        class Particle {
+            constructor(x, y) {
+                this.x = x; this.y = y;
+                this.size = Math.random() * 3 + 1;
+                this.vx = (Math.random() - 0.5) * 2;
+                this.vy = (Math.random() - 0.5) * 2;
+                this.life = 1.0;
+            }
+            draw() {
+                ctx.fillStyle = `rgba(${activeTheme === 'cyberpunk' ? '255,0,255' : (activeTheme === 'emerald' ? '0,255,136' : '59,130,246')}, ${this.life})`;
+                ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill();
+            }
+        }
+
+        const tooltip = document.getElementById('tooltip');
+        function showTooltip(e, text) { tooltip.textContent = text; tooltip.style.opacity = 1; }
+        function hideTooltip() { tooltip.style.opacity = 0; }
+
+        // --- 7. CUSTOM CURSOR LOGIC ---
+        const cursorDot = document.getElementById('cursorDot');
+        const cursorFollower = document.getElementById('cursorFollower');
+        let cursorX = 0, cursorY = 0;
+        let followerX = 0, followerY = 0;
+
+        document.addEventListener('mousedown', () => cursorDot.classList.add('click'));
+        document.addEventListener('mouseup', () => cursorDot.classList.remove('click'));
+
+        // Handle Hover States
+        function initCursorHovers() {
+            const hoverTargets = document.querySelectorAll('.btn, .social-link, .floating-element');
+            hoverTargets.forEach(target => {
+                target.addEventListener('mouseenter', () => {
+                    cursorFollower.classList.add('hover');
+                });
+                target.addEventListener('mouseleave', () => cursorFollower.classList.remove('hover'));
+            });
+        }
+
+        // --- 8. MAIN LOOP ---
+        let startTime = Date.now();
+        let burstTriggered = false;
+
+        let heroVisible = true;
+        const heroObserver = new IntersectionObserver((entries) => {
+            heroVisible = entries[0].isIntersecting;
+        }, { threshold: 0.1 });
+        heroObserver.observe(document.querySelector('.viewport'));
+
+        function triggerBurst() {
+            for (let i = 0; i < (window.innerWidth < 768 ? 30 : 100); i++) {
+                const p = new Particle(window.innerWidth / 2, window.innerHeight / 2);
+                p.vx = (Math.random() - 0.5) * 15;
+                p.vy = (Math.random() - 0.5) * 15;
+                p.size = Math.random() * 5 + 2;
+                particles.push(p);
+            }
+        }
+
+        function animate() {
+            const isDesktop = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+            
+            if (heroVisible || isDesktop) {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                updateInteractions();
+
+                const elapsed = (Date.now() - startTime) / 1000;
+                if (elapsed > 7.5 && !burstTriggered && heroVisible) {
+                    triggerBurst();
+                    burstTriggered = true;
+                }
+
+                // Cursor Smoothing (Lerp)
+                if (isDesktop) {
+                    followerX += (mouseX - followerX) * 0.15;
+                    followerY += (mouseY - followerY) * 0.15;
+                    cursorDot.style.left = `${mouseX}px`;
+                    cursorDot.style.top = `${mouseY}px`;
+                    cursorFollower.style.left = `${followerX - 15}px`;
+                    cursorFollower.style.top = `${followerY - 15}px`;
+                }
+
+                if (heroVisible) {
+                    if (mouseX > 0 && particles.length < (window.innerWidth < 768 ? 20 : 100)) {
+                        particles.push(new Particle(mouseX, mouseY));
+                    }
+                    particles = particles.filter(p => p.life > 0);
+                    particles.forEach(p => { p.x += p.vx; p.y += p.vy; p.life -= 0.02; p.draw(); });
+
+                    for (let i = 0; i < bubbles.length; i++) {
+                        for (let j = i + 1; j < bubbles.length; j++) resolveCollision(bubbles[i], bubbles[j]);
+                        bubbles[i].update();
+                    }
+                }
+
+                if (tooltip.style.opacity == 1) {
+                    tooltip.style.left = `${mouseX + 20}px`;
+                    tooltip.style.top = `${mouseY + 20}px`;
+                }
+            }
+            requestAnimationFrame(animate);
+        }
+
+        // --- 9. SECURITY & UX ---
+        const terminal = document.getElementById('terminal');
+        function addLog(msg) {
+            const entry = document.createElement('div');
+            entry.className = 'log-entry';
+            const time = new Date().toLocaleTimeString('en-US', { hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit' });
+            entry.innerHTML = `<span>[${time}]</span> <span>${msg}</span>`;
+            terminal.appendChild(entry);
+            if (terminal.childNodes.length > 6) terminal.removeChild(terminal.firstChild);
+        }
+
+        addLog("System initialized.");
+        setTimeout(() => addLog("Neural patterns synced."), 1000);
+        setTimeout(() => addLog("Creative core active."), 2000);
+
+        function updateClock() {
+            const now = new Date();
+            document.getElementById('systemClock').textContent = now.toLocaleTimeString('en-US', { hour12: false });
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX; mouseY = e.clientY;
+        });
+
+        // Initialize dynamic hovers after bubbles/letters are created
+        setTimeout(initCursorHovers, 3000);
+        animate();
+    </script>
+</body>
+
+</html>

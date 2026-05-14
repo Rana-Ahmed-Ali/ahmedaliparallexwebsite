@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact | Ahmed Ali | Cinematic Portfolio</title>
+    <meta name="description"
+        content="Get in touch with Ahmed Ali for collaborations, projects, or just to say hello. Available for immersive digital experience design and development.">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;700&family=Syncopate:wght@400;700&family=Syne:wght@400;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/global.css">
+    <link rel="stylesheet" href="assets/css/contact.css">
+</head>
+</head>
+
+<body data-theme="midnight">
+    <!-- CUSTOM CURSOR -->
+    <div class="cursor-dot" id="cursorDot"></div>
+    <div class="cursor-follower" id="cursorFollower"></div>
+
+    <div id="grid"></div>
+    <div class="aura"></div>
+    <div class="grain"></div>
+
+    <nav class="nav-back">
+        <a href="index.html" class="btn-back magnetic">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+            BACK TO HOME
+        </a>
+    </nav>
+
+    <div style="position: fixed; top: 2rem; right: 2rem; z-index: 100;">
+        <button class="btn-back magnetic" onclick="cycleTheme()">NEXT THEME</button>
+    </div>
+
+    <main class="contact-container">
+        <header class="contact-header">
+            <h1 class="contact-title">Connect.</h1>
+            <p style="font-size: 1.2rem; opacity: 0.6; max-width: 600px;">Have a project in mind or just want to chat? Reach out and let's create something extraordinary together.</p>
+        </header>
+
+        <div class="contact-grid">
+            <aside class="info-card">
+                <div class="info-item">
+                    <span class="info-label">Direct Email</span>
+                    <a href="mailto:aa12437809@gmail.com" class="info-value magnetic">aa12437809@gmail.com</a>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Phone / WhatsApp</span>
+                    <a href="tel:+923147117049" class="info-value magnetic">+92 314 711 7049</a>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Location</span>
+                    <span class="info-value">Available Worldwide</span>
+                </div>
+
+                <div class="social-wrap">
+                    <a href="https://github.com/Rana-Ahmed-Ali" target="_blank" class="social-icon magnetic">
+                        <svg viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                    </a>
+                </div>
+            </aside>
+
+            <section class="form-card">
+                <form id="contactForm">
+                    <div class="form-group">
+                        <input type="text" id="name" class="form-input" placeholder=" " required>
+                        <label for="name" class="form-label">Your Name</label>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" id="email" class="form-input" placeholder=" " required>
+                        <label for="email" class="form-label">Email Address</label>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" id="subject" class="form-input" placeholder=" ">
+                        <label for="subject" class="form-label">Subject</label>
+                    </div>
+                    <div class="form-group">
+                        <textarea id="message" class="form-input" placeholder=" " required></textarea>
+                        <label for="message" class="form-label">How can I help?</label>
+                    </div>
+                    <button type="submit" class="submit-btn magnetic">Send Message</button>
+                    <div id="statusMessage"></div>
+                </form>
+            </section>
+        </div>
+    </main>
+
+    <script>
+        // CUSTOM CURSOR LOGIC
+        const cursorDot = document.getElementById('cursorDot');
+        const cursorFollower = document.getElementById('cursorFollower');
+        let mouseX = 0, mouseY = 0;
+        let followerX = 0, followerY = 0;
+
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+            
+            // Grid interaction
+            document.documentElement.style.setProperty('--m-x', `${(e.clientX / window.innerWidth) * 100}%`);
+            document.documentElement.style.setProperty('--m-y', `${(e.clientY / window.innerHeight) * 100}%`);
+        });
+
+        function animateCursor() {
+            followerX += (mouseX - followerX) * 0.1;
+            followerY += (mouseY - followerY) * 0.1;
+
+            cursorDot.style.left = `${mouseX}px`;
+            cursorDot.style.top = `${mouseY}px`;
+            cursorFollower.style.left = `${followerX - 15}px`;
+            cursorFollower.style.top = `${followerY - 15}px`;
+
+            requestAnimationFrame(animateCursor);
+        }
+        animateCursor();
+
+        // MAGNETIC BUTTONS
+        const magneticElements = document.querySelectorAll('.magnetic');
+        magneticElements.forEach(el => {
+            el.addEventListener('mousemove', (e) => {
+                const rect = el.getBoundingClientRect();
+                const x = e.clientX - rect.left - rect.width / 2;
+                const y = e.clientY - rect.top - rect.height / 2;
+                el.style.transform = `translate(${x * 0.3}px, ${y * 0.3}px)`;
+                cursorFollower.classList.add('hover');
+            });
+            el.addEventListener('mouseleave', () => {
+                el.style.transform = '';
+                cursorFollower.classList.remove('hover');
+            });
+        });
+
+        // FORM SUBMISSION
+        const contactForm = document.getElementById('contactForm');
+        const statusMessage = document.getElementById('statusMessage');
+
+        contactForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const btn = contactForm.querySelector('.submit-btn');
+            btn.textContent = 'TRANSMITTING...';
+            btn.style.opacity = '0.7';
+            btn.disabled = true;
+
+            // Simulate sending
+            setTimeout(() => {
+                btn.textContent = 'MESSAGE SENT';
+                btn.style.background = '#00ff88';
+                statusMessage.textContent = 'Transmission received. I will get back to you shortly.';
+                statusMessage.style.color = '#00ff88';
+                statusMessage.classList.add('visible');
+                contactForm.reset();
+                
+                setTimeout(() => {
+                    btn.textContent = 'SEND MESSAGE';
+                    btn.style.background = '';
+                    btn.style.opacity = '1';
+                    btn.disabled = false;
+                }, 3000);
+            }, 1500);
+        });
+
+        // THEME SYNC
+        let activeTheme = localStorage.getItem('portfolio-theme') || 'midnight';
+        document.documentElement.setAttribute('data-theme', activeTheme);
+
+        function cycleTheme() {
+            const themes = ['midnight', 'cyberpunk', 'emerald'];
+            activeTheme = themes[(themes.indexOf(activeTheme) + 1) % themes.length];
+            document.documentElement.setAttribute('data-theme', activeTheme);
+            localStorage.setItem('portfolio-theme', activeTheme);
+        }
+    </script>
+</body>
+
+</html>

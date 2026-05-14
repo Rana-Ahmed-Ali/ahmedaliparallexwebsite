@@ -1,0 +1,162 @@
+:root {
+    --bg-color: #050505;
+    --accent: #3b82f6;
+    --accent-glow: rgba(59, 130, 246, 0.5);
+    --text-color: #ffffff;
+    --glass: rgba(255, 255, 255, 0.05);
+    --theme-speed: 0.8s;
+}
+
+[data-theme="cyberpunk"] {
+    --accent: #ff00ff;
+    --accent-glow: rgba(255, 0, 255, 0.5);
+    --bg-color: #0a000a;
+}
+
+[data-theme="emerald"] {
+    --accent: #00ff88;
+    --accent-glow: rgba(0, 255, 136, 0.5);
+    --bg-color: #000a05;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Syne', sans-serif;
+    user-select: auto;
+    -webkit-user-select: auto;
+}
+
+@media (hover: hover) and (pointer: fine) {
+    * {
+        cursor: none !important;
+    }
+}
+
+body {
+    background: var(--bg-color);
+    color: var(--text-color);
+    overflow-x: hidden;
+    transition: background var(--theme-speed);
+}
+
+/* CUSTOM CURSOR */
+.cursor-dot {
+    width: 6px;
+    height: 6px;
+    background: var(--accent);
+    position: fixed;
+    top: 0;
+    left: 0;
+    border-radius: 50%;
+    z-index: 10001;
+    pointer-events: none;
+    transition: transform 0.1s;
+    display: none;
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .cursor-dot { display: block; }
+}
+
+.cursor-follower {
+    width: 30px;
+    height: 30px;
+    border: 2px solid var(--accent);
+    position: fixed;
+    top: 0;
+    left: 0;
+    border-radius: 50%;
+    z-index: 10000;
+    pointer-events: none;
+    opacity: 0.5;
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s, width 0.3s, height 0.3s, background 0.3s;
+    display: none;
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .cursor-follower { display: block; }
+}
+
+.cursor-follower.hover {
+    width: 60px;
+    height: 60px;
+    background: var(--accent-glow);
+    border-color: transparent;
+    opacity: 0.3;
+}
+
+.cursor-dot.click {
+    transform: scale(3);
+}
+
+/* AMBIENT ELEMENTS */
+#grid {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    background-image:
+        linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    background-size: 80px 80px;
+    mask-image: radial-gradient(circle 500px at var(--m-x, 50%) var(--m-y, 50%), black 0%, transparent 100%);
+    -webkit-mask-image: radial-gradient(circle 500px at var(--m-x, 50%) var(--m-y, 50%), black 0%, transparent 100%);
+    opacity: 0.5;
+}
+
+@media (max-width: 768px) {
+    #grid { background-size: 40px 40px; }
+    .aura { filter: blur(50px); opacity: 0.1; }
+}
+
+.grain {
+    position: fixed;
+    inset: 0;
+    z-index: 9998;
+    pointer-events: none;
+    opacity: 0.04;
+    background: url('https://grainy-gradients.vercel.app/noise.svg');
+}
+
+.aura {
+    position: fixed;
+    width: 100vmax;
+    height: 100vmax;
+    background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: -1;
+    opacity: 0.15;
+    filter: blur(100px);
+    animation: auraPulse 10s infinite alternate ease-in-out;
+}
+
+@keyframes auraPulse {
+    from {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 0.1;
+    }
+
+    to {
+        transform: translate(-50%, -50%) scale(1.2);
+        opacity: 0.2;
+    }
+}
+
+/* CUSTOM SCROLLBAR */
+::-webkit-scrollbar {
+    width: 5px;
+}
+
+::-webkit-scrollbar-track {
+    background: #000;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--accent);
+    border-radius: 10px;
+    box-shadow: 0 0 10px var(--accent-glow);
+}
