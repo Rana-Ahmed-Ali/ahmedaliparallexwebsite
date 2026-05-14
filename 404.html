@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 | System Failure | Ahmed Ali</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/global.css">
+    <link rel="stylesheet" href="assets/css/error.css">
+</head>
+
+<body data-theme="midnight">
+    <div id="grid"></div>
+    <div class="aura"></div>
+    <div class="grain"></div>
+    <div class="error-bg-glitch"></div>
+
+    <!-- CUSTOM CURSOR -->
+    <div class="cursor-dot" id="cursorDot"></div>
+    <div class="cursor-follower" id="cursorFollower"></div>
+
+    <main class="error-container">
+        <div class="glitch-code">404</div>
+        <div class="error-message">Critical System Failure</div>
+
+        <div class="terminal-box">
+            <div class="terminal-line"><span>></span> INITIALIZING ERROR RECOVERY...</div>
+            <div class="terminal-line"><span>></span> PATH NOT FOUND: <span id="currentPath"></span></div>
+            <div class="terminal-line"><span>></span> CORE_DUMP: SECTOR_MISSING_0x0404</div>
+            <div class="terminal-line" id="repairStatus"><span>></span> ATTEMPTING RE-ROUTE [0%]</div>
+        </div>
+
+        <div style="margin-top: 3rem; opacity: 0; transform: translateY(20px); transition: 1s;" id="actionBtn">
+            <a href="index.html" class="btn magnetic">REBOOT SYSTEM (HOME)</a>
+        </div>
+    </main>
+
+    <script>
+        document.getElementById('currentPath').textContent = window.location.pathname;
+
+        let mouseX = 0, mouseY = 0;
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX; mouseY = e.clientY;
+            document.documentElement.style.setProperty('--m-x', `${mouseX}px`);
+            document.documentElement.style.setProperty('--m-y', `${mouseY}px`);
+        });
+
+        // Custom Cursor
+        const cursorDot = document.getElementById('cursorDot');
+        const cursorFollower = document.getElementById('cursorFollower');
+        let followerX = 0, followerY = 0;
+
+        function animateCursor() {
+            followerX += (mouseX - followerX) * 0.15;
+            followerY += (mouseY - followerY) * 0.15;
+            cursorDot.style.left = `${mouseX}px`;
+            cursorDot.style.top = `${mouseY}px`;
+            cursorFollower.style.left = `${followerX - 15}px`;
+            cursorFollower.style.top = `${followerY - 15}px`;
+            requestAnimationFrame(animateCursor);
+        }
+        animateCursor();
+
+        // Repair Sequence
+        const status = document.getElementById('repairStatus');
+        const btn = document.getElementById('actionBtn');
+        let p = 0;
+        const interval = setInterval(() => {
+            p += Math.floor(Math.random() * 5) + 1;
+            if (p >= 100) {
+                p = 100;
+                clearInterval(interval);
+                status.innerHTML = "<span>></span> RE-ROUTE SUCCESSFUL. SYSTEM STABLE.";
+                btn.style.opacity = "1";
+                btn.style.transform = "translateY(0)";
+            } else {
+                status.innerHTML = `<span>></span> ATTEMPTING RE-ROUTE [${p}%]`;
+            }
+        }, 100);
+
+        // Hover effect for button
+        btn.querySelector('a').addEventListener('mouseenter', () => cursorFollower.classList.add('hover'));
+        btn.querySelector('a').addEventListener('mouseleave', () => cursorFollower.classList.remove('hover'));
+    </script>
+</body>
+
+</html>
