@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Projects | Ahmed Ali | Digital Experience Architect</title>
     <meta name="description" content="Explore the creative works and technical projects of Ahmed Ali.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;700&family=Syncopate:wght@400;700&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/global.css">
     <link rel="stylesheet" href="assets/css/projects.css">
@@ -229,6 +231,19 @@
         });
 
         addLog("Projects module initialized.");
+
+        // Link Prefetcher
+        document.querySelectorAll('a').forEach(link => {
+            link.addEventListener('mouseenter', () => {
+                const href = link.getAttribute('href');
+                if (href && href.endsWith('.html') && !href.startsWith('http')) {
+                    const prefetchLink = document.createElement('link');
+                    prefetchLink.rel = 'prefetch';
+                    prefetchLink.href = href;
+                    document.head.appendChild(prefetchLink);
+                }
+            }, { once: true });
+        });
     </script>
 </body>
 </html>

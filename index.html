@@ -7,6 +7,8 @@
     <title>Ahmed Ali | Cinematic Portfolio & Digital Experience Architect</title>
     <meta name="description"
         content="Explore the cinematic portfolio of Ahmed Ali, a multi-disciplinary developer and designer specializing in immersive digital experiences and interactive web design.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
         href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;700&family=Syncopate:wght@400;700&family=Syne:wght@400;700;800&display=swap"
         rel="stylesheet">
@@ -496,6 +498,28 @@
         // Initialize dynamic hovers after bubbles/letters are created
         setTimeout(initCursorHovers, 3000);
         animate();
+
+        // --- 10. PERFORMANCE: SERVICE WORKER & PREFETCH ---
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js').then(reg => {
+                    console.log('SW Registered');
+                }).catch(err => console.log('SW Failed', err));
+            });
+        }
+
+        // Link Prefetcher (InstantClick)
+        document.querySelectorAll('a').forEach(link => {
+            link.addEventListener('mouseenter', () => {
+                const href = link.getAttribute('href');
+                if (href && href.endsWith('.html') && !href.startsWith('http')) {
+                    const prefetchLink = document.createElement('link');
+                    prefetchLink.rel = 'prefetch';
+                    prefetchLink.href = href;
+                    document.head.appendChild(prefetchLink);
+                }
+            }, { once: true });
+        });
     </script>
 </body>
 

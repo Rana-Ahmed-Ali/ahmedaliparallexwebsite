@@ -7,6 +7,8 @@
     <title>Contact | Ahmed Ali | Cinematic Portfolio</title>
     <meta name="description"
         content="Get in touch with Ahmed Ali for collaborations, projects, or just to say hello. Available for immersive digital experience design and development.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
         href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;700&family=Syncopate:wght@400;700&family=Syne:wght@400;700;800&display=swap"
         rel="stylesheet">
@@ -172,6 +174,19 @@
             document.documentElement.setAttribute('data-theme', activeTheme);
             localStorage.setItem('portfolio-theme', activeTheme);
         }
+        
+        // Link Prefetcher
+        document.querySelectorAll('a').forEach(link => {
+            link.addEventListener('mouseenter', () => {
+                const href = link.getAttribute('href');
+                if (href && href.endsWith('.html') && !href.startsWith('http')) {
+                    const prefetchLink = document.createElement('link');
+                    prefetchLink.rel = 'prefetch';
+                    prefetchLink.href = href;
+                    document.head.appendChild(prefetchLink);
+                }
+            }, { once: true });
+        });
     </script>
 </body>
 
